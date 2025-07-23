@@ -11,8 +11,23 @@ export const PrecioProvider = ({ children }) => {
   const [pedido, setPedido] = useState([]);
 
   const agregarProducto = (producto) => {
-    setPedido((prev) => [...prev, producto]);
-    setTotal((prev) => prev + producto.precio);
+    // Si es hamburguesa, reemplazar la anterior
+    if (producto.categoria === 'hamburguesa') {
+      setPedido((prev) => {
+        const sinHamburguesa = prev.filter(item => item.categoria !== 'hamburguesa');
+        return [...sinHamburguesa, producto];
+      });
+
+      setTotal((prev) => {
+        const anterior = pedido.find(p => p.categoria === 'hamburguesa');
+        const resta = anterior ? anterior.precio : 0;
+        return prev - resta + producto.precio;
+      });
+    } else {
+      // Para combos, bebidas, etc., se agregan normalmente
+      setPedido((prev) => [...prev, producto]);
+      setTotal((prev) => prev + producto.precio);
+    }
   };
 
   const reiniciarPedido = () => {

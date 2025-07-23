@@ -8,7 +8,7 @@ if (!MONGODB_URI) throw new Error("Falta la URI de MongoDB");
 let cached = global.mongoose || { conn: null, promise: null };
 global.mongoose = cached;
 
-export async function connectDB() {
+const connectDB = async () => {
   if (cached.conn) return cached.conn;
 
   cached.promise =
@@ -19,4 +19,6 @@ export async function connectDB() {
 
   cached.conn = await cached.promise;
   return cached.conn;
-}
+};
+
+export default connectDB;

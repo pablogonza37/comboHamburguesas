@@ -10,9 +10,27 @@ const ConfirmarPedido = () => {
   const router = useRouter();
 
   const handleConfirmar = async () => {
+    if (!pedido || pedido.length === 0) {
+      const result = await Swal.fire({
+        icon: 'warning',
+        title: 'Sin pedido',
+        text: 'No hay productos en el pedido. ¿Querés elegir algo?',
+        showCancelButton: true,
+        confirmButtonText: 'Ir a hamburguesas',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#16a34a',
+        cancelButtonColor: '#9ca3af',
+      });
+
+      if (result.isConfirmed) {
+        router.push('/hamburguesas');
+      }
+
+      return;
+    }
+
     try {
-      // Simulación de envío (descomentar si lo vas a usar)
-      /* const response = await fetch('/api/pedidos', {
+      const response = await fetch('/api/pedidos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productos: pedido, total }),
@@ -23,7 +41,7 @@ const ConfirmarPedido = () => {
       }
 
       const data = await response.json();
-      console.log('Respuesta del servidor:', data); */
+      console.log('Respuesta del servidor:', data);
 
       await Swal.fire({
         icon: 'success',

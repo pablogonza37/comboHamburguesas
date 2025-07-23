@@ -1,6 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { PrecioProvider } from "../app/contexto/precioContext";
+import PrecioTotal from "../components/ui/precioTotal";
+import NavBar from "../components/ui/nav/navbar"; // <- Nueva línea
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,7 +26,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <PrecioProvider>
+          <PrecioTotal />
+          <NavBar /> {/* <-- NavBar agregado aquí */}
+          {children}
+        </PrecioProvider>
       </body>
     </html>
   );

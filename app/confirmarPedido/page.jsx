@@ -30,7 +30,7 @@ const ConfirmarPedido = () => {
     }
 
     try {
-      const response = await fetch('/api/pedidos', {
+    /*  const response = await fetch('/api/pedidos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productos: pedido, total }),
@@ -41,7 +41,7 @@ const ConfirmarPedido = () => {
       }
 
       const data = await response.json();
-      console.log('Respuesta del servidor:', data);
+      console.log('Respuesta del servidor:', data);*/
 
       await Swal.fire({
         icon: 'success',

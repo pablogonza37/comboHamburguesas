@@ -3,10 +3,13 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux'; // ✅
+import { reiniciarPedido } from '../../app/redux/pedidosSlice'; 
 
 const Pago = () => {
   const [metodoSeleccionado, setMetodoSeleccionado] = useState(null);
   const router = useRouter();
+  const dispatch = useDispatch(); // ✅
 
   const metodos = [
     { nombre: 'Tarjeta de crédito / débito', icono: '💳' },
@@ -74,11 +77,8 @@ const Pago = () => {
       cancelButtonColor: '#d33',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire(
-          '¡Compra confirmada!',
-          'Gracias por tu compra.',
-          'success'
-        ).then(() => {
+        Swal.fire('¡Compra confirmada!', 'Gracias por tu compra.', 'success').then(() => {
+          dispatch(reiniciarPedido()); // ✅ Limpia el pedido y el total
           router.push('/principal');
         });
       }

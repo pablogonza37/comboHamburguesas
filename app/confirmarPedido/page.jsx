@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { usePrecio } from '@/app/contexto/precioContext';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 
 const ConfirmarPedido = () => {
-  const { pedido, total, reiniciarPedido } = usePrecio();
+  const { pedido, total } = useSelector((state) => state.pedido);
   const router = useRouter();
 
   const handleConfirmar = async () => {
@@ -30,19 +30,6 @@ const ConfirmarPedido = () => {
     }
 
     try {
-    /*  const response = await fetch('/api/pedidos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productos: pedido, total }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al enviar el pedido');
-      }
-
-      const data = await response.json();
-      console.log('Respuesta del servidor:', data);*/
-
       await Swal.fire({
         icon: 'success',
         title: '¡Pedido confirmado!',
@@ -51,7 +38,7 @@ const ConfirmarPedido = () => {
         confirmButtonColor: '#16a34a',
       });
 
-      // reiniciarPedido();
+      // dispatch(reiniciarPedido());
       router.push('/pago');
     } catch (error) {
       console.error('Error al enviar el pedido:', error);

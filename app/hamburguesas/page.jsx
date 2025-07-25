@@ -2,66 +2,24 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { usePrecio } from '@/app/contexto/precioContext';
+import { useDispatch } from 'react-redux';
+import { agregarProducto } from '../../app/redux/pedidosSlice';
 
 const Hamburguesas = () => {
   const router = useRouter();
-  const { agregarProducto } = usePrecio();
+  const dispatch = useDispatch();
 
   const hamburguesas = [
-  {
-    nombre: 'Clásica',
-    descripcion: 'Carne, lechuga y tomate.',
-    basePrecio: 1500,
-    imagen:
-      'https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&h=350',
-  },
-  {
-    nombre: 'Cheddar Bacon',
-    descripcion: 'Con queso cheddar y panceta.',
-    basePrecio: 1800,
-    imagen:
-      'https://images.pexels.com/photos/2089717/pexels-photo-2089717.jpeg',
-  },
-  {
-    nombre: 'Veggie',
-    descripcion: 'Hamburguesa de lentejas con vegetales.',
-    basePrecio: 1600,
-    imagen:
-      'https://images.pexels.com/photos/20741663/pexels-photo-20741663.jpeg',
-  },
-  {
-    nombre: 'Doble',
-    descripcion: 'Doble carne, doble queso.',
-    basePrecio: 2200,
-    imagen:
-      'https://images.pexels.com/photos/32177657/pexels-photo-32177657.jpeg',
-  },
-  {
-    nombre: 'Triple',
-    descripcion: 'Triple carne, cheddar, panceta, cebolla.',
-    basePrecio: 2600,
-    imagen:
-      'https://images.pexels.com/photos/12325119/pexels-photo-12325119.jpeg',
-  },
-  {
-    nombre: 'Pollo',
-    descripcion: 'Hamburguesa crispy de pollo.',
-    basePrecio: 1700,
-    imagen:
-      'https://images.pexels.com/photos/918581/pexels-photo-918581.jpeg',
-  },
-];
+    { nombre: 'Clásica', descripcion: 'Carne, lechuga y tomate.', basePrecio: 1500, imagen: 'https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&h=350' },
+    { nombre: 'Cheddar Bacon', descripcion: 'Con queso cheddar y panceta.', basePrecio: 1800, imagen: 'https://images.pexels.com/photos/2089717/pexels-photo-2089717.jpeg' },
+    { nombre: 'Veggie', descripcion: 'Hamburguesa de lentejas con vegetales.', basePrecio: 1600, imagen: 'https://images.pexels.com/photos/20741663/pexels-photo-20741663.jpeg' },
+    { nombre: 'Doble', descripcion: 'Doble carne, doble queso.', basePrecio: 2200, imagen: 'https://images.pexels.com/photos/32177657/pexels-photo-32177657.jpeg' },
+    { nombre: 'Triple', descripcion: 'Triple carne, cheddar, panceta, cebolla.', basePrecio: 2600, imagen: 'https://images.pexels.com/photos/12325119/pexels-photo-12325119.jpeg' },
+    { nombre: 'Pollo', descripcion: 'Hamburguesa crispy de pollo.', basePrecio: 1700, imagen: 'https://images.pexels.com/photos/918581/pexels-photo-918581.jpeg' },
+  ];
 
-  const tamaños = {
-    standard: 1,
-    mediana: 1.2,
-    grande: 1.5,
-  };
-
-  const [seleccion, setSeleccion] = useState(
-    hamburguesas.map(() => 'standard')
-  );
+  const tamaños = { standard: 1, mediana: 1.2, grande: 1.5 };
+  const [seleccion, setSeleccion] = useState(hamburguesas.map(() => 'standard'));
 
   const handleCambioTamaño = (index, nuevoTamaño) => {
     const actualizado = [...seleccion];
@@ -78,9 +36,10 @@ const Hamburguesas = () => {
       ...burger,
       tamaño,
       precio: precioFinal,
+      categoria: 'hamburguesa',
     };
 
-    agregarProducto(productoConTamaño);
+    dispatch(agregarProducto(productoConTamaño));
     router.push('/combo');
   };
 
@@ -93,21 +52,12 @@ const Hamburguesas = () => {
           const precioFinal = Math.round(burger.basePrecio * tamaños[tamaño]);
 
           return (
-            <div
-              key={index}
-              className="p-4 rounded-2xl shadow-lg hover:shadow-2xl transition bg-white"
-            >
-              <img
-                src={burger.imagen}
-                alt={burger.nombre}
-                className="w-full h-48 object-cover rounded-md mb-4"
-              />
+            <div key={index} className="p-4 rounded-2xl shadow-lg hover:shadow-2xl transition bg-white">
+              <img src={burger.imagen} alt={burger.nombre} className="w-full h-48 object-cover rounded-md mb-4" />
               <h3 className="text-xl font-bold">{burger.nombre}</h3>
               <p className="text-gray-600">{burger.descripcion}</p>
 
-              <label className="block mt-3 text-sm font-medium text-gray-700">
-                Tamaño:
-              </label>
+              <label className="block mt-3 text-sm font-medium text-gray-700">Tamaño:</label>
               <select
                 value={tamaño}
                 onChange={(e) => handleCambioTamaño(index, e.target.value)}

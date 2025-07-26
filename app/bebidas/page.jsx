@@ -28,20 +28,6 @@ useEffect(() => {
       categoria: 'bebida',
     },
     {
-      nombre: 'Agua sin gas',
-      descripcion: 'Natural y ligera.',
-      precio: 500,
-      imagen: 'https://images.pexels.com/photos/30762213/pexels-photo-30762213.jpeg',
-      categoria: 'bebida',
-    },
-    {
-      nombre: 'Limonada',
-      descripcion: 'Con menta y limón.',
-      precio: 750,
-      imagen: 'https://images.pexels.com/photos/2109099/pexels-photo-2109099.jpeg',
-      categoria: 'bebida',
-    },
-    {
       nombre: 'Sprite 500ml',
       descripcion: 'Refrescante y burbujeante.',
       precio: 600,
@@ -88,7 +74,7 @@ useEffect(() => {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <h2 className="text-3xl mb-6 font-semibold text-center">Elegí tu bebida</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {bebidas.map((bebida, index) => (
           <div
             key={index}

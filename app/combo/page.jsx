@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice'; // ✅ usar reemplazo
+import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice'; 
 
 const Combo = () => {
   const router = useRouter();
@@ -12,7 +12,6 @@ const Combo = () => {
 
   const productos = useSelector((state) => state.pedido.pedido);
 
-  // 🔒 Validación: redirige si no hay hamburguesa
   useEffect(() => {
     const hayHamburguesa = productos.some((p) => p.categoria === 'hamburguesa');
     if (!hayHamburguesa) {

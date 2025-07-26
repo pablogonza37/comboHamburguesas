@@ -3,13 +3,18 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux'; // ✅
-import { reiniciarPedido } from '../../app/redux/pedidosSlice'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { reiniciarPedido } from '../../app/redux/pedidosSlice';
+import { limpiarHistorial } from '../../app/redux/historialSlice'; 
 
 const Pago = () => {
   const [metodoSeleccionado, setMetodoSeleccionado] = useState(null);
   const router = useRouter();
-  const dispatch = useDispatch(); // ✅
+  const dispatch = useDispatch();
+
+  // ✅ Obtener historial y calcular total acumulado
+  const historial = useSelector((state) => state.historial.pedidosConfirmados);
+  const totalAcumulado = historial.reduce((total, pedido) => total + pedido.total, 0);
 
   const metodos = [
     { nombre: 'Tarjeta de crédito / débito', icono: '💳' },
@@ -78,7 +83,8 @@ const Pago = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire('¡Compra confirmada!', 'Gracias por tu compra.', 'success').then(() => {
-          dispatch(reiniciarPedido()); // ✅ Limpia el pedido y el total
+          dispatch(reiniciarPedido());
+          dispatch(limpiarHistorial());
           router.push('/principal');
         });
       }
@@ -86,7 +92,12 @@ const Pago = () => {
   };
 
   return (
-    <div className="bg-gray-50 py-12 px-4 min-h-screen">
+    <div className="bg-gray-50 py-12 px-4 min-h-screen relative">
+      {/* ✅ Total acumulado flotante */}
+      <div className="fixed top-20 right-4 bg-yellow-300 text-black font-bold px-4 py-2 rounded-xl shadow-lg z-50">
+        Total acumulado: ${totalAcumulado}
+      </div>
+
       <h2 className="text-4xl font-bold text-center mb-10">
         Elegí tu medio de pago
       </h2>

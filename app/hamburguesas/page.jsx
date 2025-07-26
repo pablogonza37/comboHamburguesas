@@ -70,8 +70,8 @@ const Hamburguesas = () => {
 
   return (
     <div className="max-w-5xl mx-auto mt-10 p-4">
-      <h2 className="text-2xl font-bold mb-6 text-center">Elegí tu hamburguesa</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <h2 className="text-3xl mb-6 font-semibold text-center">Elegí tu hamburguesa</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {hamburguesas.map((item) => (
           <div
             key={item.nombre}
@@ -92,7 +92,7 @@ const Hamburguesas = () => {
         <div className="mt-8 text-center">
           <h3 className="text-lg font-semibold mb-3">Elegí el tamaño</h3>
           <div className="flex gap-4 justify-center">
-            {['individual', 'doble', 'triple'].map((t) => (
+            {['simple', 'doble', 'triple'].map((t) => (
               <button
                 key={t}
                 onClick={() => handleSeleccionTamano(t)}

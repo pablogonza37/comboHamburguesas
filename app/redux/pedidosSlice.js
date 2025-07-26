@@ -12,17 +12,9 @@ export const pedidoSlice = createSlice({
     agregarProducto: (state, action) => {
       const producto = action.payload;
 
-      if (producto.categoria === 'hamburguesa') {
-        const sinHamburguesa = state.pedido.filter(item => item.categoria !== 'hamburguesa');
-        const anterior = state.pedido.find(p => p.categoria === 'hamburguesa');
-        const resta = anterior ? anterior.precio : 0;
-
-        state.pedido = [...sinHamburguesa, producto];
-        state.total = state.total - resta + producto.precio;
-      } else {
-        state.pedido.push(producto);
-        state.total += producto.precio;
-      }
+      // Agrega cualquier producto (incluyendo hamburguesas) sin reemplazar
+      state.pedido.push(producto);
+      state.total += producto.precio;
     },
     reiniciarPedido: (state) => {
       state.pedido = [];

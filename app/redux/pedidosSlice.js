@@ -9,19 +9,26 @@ export const pedidoSlice = createSlice({
   name: 'pedido',
   initialState,
   reducers: {
-    agregarProducto: (state, action) => {
-      const producto = action.payload;
-
-      // Agrega cualquier producto (incluyendo hamburguesas) sin reemplazar
-      state.pedido.push(producto);
-      state.total += producto.precio;
+    reemplazarProductoPorCategoria: (state, action) => {
+      const { categoria, nuevoProducto } = action.payload;
+      state.pedido = state.pedido.filter(p => p.categoria !== categoria);
+      state.pedido.push(nuevoProducto);
+      state.total = state.pedido.reduce((acc, curr) => acc + curr.precio, 0);
     },
+
+    // 👇 Nuevo reducer
+    agregarProducto: (state, action) => {
+      state.pedido.push(action.payload);
+      state.total += action.payload.precio;
+    },
+
     reiniciarPedido: (state) => {
       state.pedido = [];
       state.total = 0;
-    }
-  }
+    },
+  },
 });
 
-export const { agregarProducto, reiniciarPedido } = pedidoSlice.actions;
+// 👇 Exportá también la nueva acción
+export const { reemplazarProductoPorCategoria, agregarProducto, reiniciarPedido } = pedidoSlice.actions;
 export default pedidoSlice.reducer;

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import { agregarProducto } from '../../app/redux/pedidosSlice';
+import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice';
 
 const Hamburguesas = () => {
   const dispatch = useDispatch();
@@ -52,11 +52,14 @@ const Hamburguesas = () => {
     const precioFinal = calcularPrecio(seleccionada.basePrecio, t);
 
     dispatch(
-      agregarProducto({
-        nombre: `${seleccionada.nombre} (${t})`,
-        precio: precioFinal,
+      reemplazarProductoPorCategoria({
         categoria: 'hamburguesa',
-        imagen: seleccionada.imagen,
+        nuevoProducto: {
+          nombre: `${seleccionada.nombre} (${t})`,
+          precio: precioFinal,
+          categoria: 'hamburguesa',
+          imagen: seleccionada.imagen,
+        }
       })
     );
   };

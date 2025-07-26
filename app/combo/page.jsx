@@ -1,14 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
-import { agregarProducto } from '../../app/redux/pedidosSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice'; // ✅ usar reemplazo
 
 const Combo = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [seleccionado, setSeleccionado] = useState(null);
+
+  const productos = useSelector((state) => state.pedido.pedido);
+
+  // 🔒 Validación: redirige si no hay hamburguesa
+  useEffect(() => {
+    const hayHamburguesa = productos.some((p) => p.categoria === 'hamburguesa');
+    if (!hayHamburguesa) {
+      router.push('/hamburguesas');
+    }
+  }, [productos, router]);
 
   const combos = [
     {
@@ -43,7 +53,12 @@ const Combo = () => {
 
   const handleSeleccionar = (combo) => {
     setSeleccionado(combo);
-    dispatch(agregarProducto(combo));
+    dispatch(
+      reemplazarProductoPorCategoria({
+        categoria: 'combo',
+        nuevoProducto: combo,
+      })
+    );
   };
 
   const handleSiguiente = () => {

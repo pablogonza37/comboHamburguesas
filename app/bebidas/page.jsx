@@ -5,94 +5,106 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice';
 
+const Loading = () => (
+  <div className="flex justify-center items-center h-64">
+    <svg
+      className="animate-spin h-12 w-12 text-green-600"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      aria-label="Cargando"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      ></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+      ></path>
+    </svg>
+  </div>
+);
+
 const Bebidas = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [seleccionada, setSeleccionada] = useState(null);
+  const [bebidas, setBebidas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const productos = useSelector((state) => state.pedido.pedido);
   const hayCombo = productos.some((p) => p.categoria === 'combo');
 
-useEffect(() => {
+  useEffect(() => {
     if (!hayCombo) {
       router.push('/combo');
     }
   }, [hayCombo, router]);
 
-  const bebidas = [
-    {
-      nombre: 'Coca-Cola 500ml',
-      descripcion: 'Clásica y refrescante.',
-      precio: 600,
-      imagen: 'https://fratalmacenar.vtexassets.com/arquivos/ids/156126-800-auto?v=638358478554870000&width=800&height=auto&aspect=true',
-      categoria: 'bebida',
-    },
-    {
-      nombre: 'Sprite 500ml',
-      descripcion: 'Refrescante y burbujeante.',
-      precio: 600,
-      imagen: 'https://jumboargentina.vtexassets.com/arquivos/ids/791794/Gaseosa-Sprite-Lima-lim-n-500-Ml-2-10500.jpg',
-      categoria: 'bebida',
-    },
-    {
-      nombre: 'Pepsi 500ml',
-      descripcion: 'Sabor intenso y dulce.',
-      precio: 600,
-      imagen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTooWaDpeRMRn3ovabfMGuffQqyCHrwEaX2wg&s',
-      categoria: 'bebida',
-    },
-    {
-      nombre: 'Fanta 500ml',
-      descripcion: 'Sabor a naranja vibrante.',
-      precio: 600,
-      imagen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1gchwgtyzebd6UKho0wad3sI0ANDsQy7eLA&s',
-      categoria: 'bebida',
-    },
-    {
-      nombre: 'Agua con gas',
-      descripcion: 'Burbujeante y ligera.',
-      precio: 550,
-      imagen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYtDXx8uaHUDFUsLlUA88UHV4QJgsIpPx_zg&s',
-      categoria: 'bebida',
-    },
-  ];
+  useEffect(() => {
+    const obtenerBebidas = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('/api/pedidos');
+        const data = await res.json();
+        if (data.bebidas) {
+          setBebidas(data.bebidas);
+        }
+      } catch (error) {
+        console.error('Error al traer bebidas:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    obtenerBebidas();
+  }, []);
 
   const handleSeleccionar = (bebida) => {
     setSeleccionada(bebida);
-    dispatch(
-      reemplazarProductoPorCategoria({
-        categoria: 'bebida',
-        nuevoProducto: bebida,
-      })
-    );
+    dispatch(reemplazarProductoPorCategoria({ categoria: 'bebida', nuevoProducto: bebida }));
   };
 
   const handleSiguiente = () => {
     router.push('/confirmarPedido');
   };
 
+  if (loading) return <Loading />;
+
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-3xl mb-6 font-semibold text-center">Elegí tu bebida</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="flex flex-col gap-6">
         {bebidas.map((bebida, index) => (
           <div
             key={index}
             onClick={() => handleSeleccionar(bebida)}
-            className={`p-4 rounded-2xl cursor-pointer border transition-all duration-200 ${
+            className={`flex items-center gap-4 border rounded-lg p-4 cursor-pointer transition-all duration-200 shadow ${
               seleccionada?.nombre === bebida.nombre
-                ? 'border-green-500 shadow-lg scale-105'
-                : 'border-gray-300 hover:shadow'
+                ? 'border-green-500 shadow-md scale-[1.02]'
+                : 'border-gray-300'
             }`}
           >
             <img
               src={bebida.imagen}
               alt={bebida.nombre}
-              className="w-full h-48 object-cover rounded-md mb-4"
+              className="w-32 h-32 object-cover rounded-md"
             />
-            <h3 className="text-xl font-bold">{bebida.nombre}</h3>
-            <p className="text-gray-600">{bebida.descripcion}</p>
-            <p className="font-semibold mt-2">${bebida.precio}</p>
+            <div className="flex-1 flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold">{bebida.nombre}</h3>
+                <p className="text-gray-600">{bebida.descripcion}</p>
+              </div>
+              <p className="text-gray-800 font-semibold whitespace-nowrap ml-4">
+                ${bebida.precio}
+              </p>
+            </div>
           </div>
         ))}
       </div>

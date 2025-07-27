@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../lib/db';
 import Pedido from '../../models/Pedidos';
+import Hamburguesa from '../../models/hamburguesa'
+import Combo from '../../models/combo'
+import Bebida from '../../models/bebida'
 
 export async function POST(req) {
   await connectDB();
@@ -27,4 +30,25 @@ export async function POST(req) {
   }
 }
 
+
+export async function GET() {
+  await connectDB();
+  try {
+    const hamburguesas = await Hamburguesa.find({});
+    const combos = await Combo.find({});
+    const bebidas = await Bebida.find({});
+
+    return NextResponse.json({
+      hamburguesas,
+      combos,
+      bebidas
+    }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Error al obtener los productos" },
+      { status: 500 }
+    );
+  }
+}
 

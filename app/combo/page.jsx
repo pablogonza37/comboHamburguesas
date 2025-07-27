@@ -3,12 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice'; 
+import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice';
 
 const Combo = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [seleccionado, setSeleccionado] = useState(null);
+  const [combos, setCombos] = useState([]);
 
   const productos = useSelector((state) => state.pedido.pedido);
 
@@ -19,45 +20,25 @@ const Combo = () => {
     }
   }, [productos, router]);
 
-  const combos = [
-    {
-      nombre: 'Con papas fritas',
-      descripcion: 'Acompañado de papas crujientes.',
-      precio: 800,
-      imagen: 'https://images.pexels.com/photos/1583884/pexels-photo-1583884.jpeg',
-      categoria: 'combo',
-    },
-    {
-      nombre: 'Con aros de cebolla',
-      descripcion: 'Aros de cebolla dorados.',
-      precio: 900,
-      imagen: 'https://images.pexels.com/photos/28909535/pexels-photo-28909535.jpeg',
-      categoria: 'combo',
-    },
-    {
-      nombre: 'Con nachos con queso',
-      descripcion: 'Nachos calientes con salsa cheddar.',
-      precio: 1000,
-      imagen: 'https://images.pexels.com/photos/17683812/pexels-photo-17683812.jpeg',
-      categoria: 'combo',
-    },
-    {
-      nombre: 'Con papas rústicas',
-      descripcion: 'Papas con piel, crocantes y especiadas.',
-      precio: 950,
-      imagen: 'https://images.pexels.com/photos/8839625/pexels-photo-8839625.jpeg',
-      categoria: 'combo',
-    },
-  ];
+  useEffect(() => {
+    const obtenerCombos = async () => {
+      try {
+        const res = await fetch('/api/pedidos'); // Cambiá si el endpoint es otro
+        const data = await res.json();
+        if (data.combos) {
+          setCombos(data.combos);
+        }
+      } catch (error) {
+        console.error('Error al traer combos:', error);
+      }
+    };
+
+    obtenerCombos();
+  }, []);
 
   const handleSeleccionar = (combo) => {
     setSeleccionado(combo);
-    dispatch(
-      reemplazarProductoPorCategoria({
-        categoria: 'combo',
-        nuevoProducto: combo,
-      })
-    );
+    dispatch(reemplazarProductoPorCategoria({ categoria: 'combo', nuevoProducto: combo }));
   };
 
   const handleSiguiente = () => {
@@ -65,27 +46,33 @@ const Combo = () => {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-3xl mb-6 font-semibold text-center">Elegí tu combo</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="flex flex-col gap-6">
         {combos.map((combo, index) => (
           <div
             key={index}
             onClick={() => handleSeleccionar(combo)}
-            className={`p-4 rounded-2xl cursor-pointer border transition-all duration-200 ${
+            className={`flex items-center gap-4 border rounded-lg p-4 cursor-pointer transition-all duration-200 shadow ${
               seleccionado?.nombre === combo.nombre
-                ? 'border-green-500 shadow-lg scale-105'
-                : 'border-gray-300 hover:shadow'
+                ? 'border-green-500 shadow-md scale-[1.02]'
+                : 'border-gray-300'
             }`}
           >
             <img
               src={combo.imagen}
               alt={combo.nombre}
-              className="w-full h-40 object-cover rounded-md mb-4"
+              className="w-32 h-32 object-cover rounded-md"
             />
-            <h3 className="text-xl font-bold">{combo.nombre}</h3>
-            <p className="text-gray-600">{combo.descripcion}</p>
-            <p className="font-semibold mt-2">${combo.precio}</p>
+            <div className="flex-1 flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold">{combo.nombre}</h3>
+                <p className="text-gray-600">{combo.descripcion}</p>
+              </div>
+              <p className="text-gray-800 font-semibold whitespace-nowrap ml-4">
+                ${combo.precio}
+              </p>
+            </div>
           </div>
         ))}
       </div>

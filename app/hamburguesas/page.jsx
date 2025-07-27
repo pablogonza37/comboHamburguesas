@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice';
@@ -9,32 +9,26 @@ const Hamburguesas = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const [hamburguesas, setHamburguesas] = useState([]);
   const [seleccionada, setSeleccionada] = useState(null);
   const [tamano, setTamano] = useState('');
+  const tamanoRef = useRef(null);
 
-  const hamburguesas = [
-    {
-      nombre: 'Clásica',
-      descripcion: 'Carne, lechuga y tomate.',
-      imagen: 'https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg',
-      categoria: 'hamburguesa',
-      basePrecio: 1500,
-    },
-    {
-      nombre: 'Cheddar',
-      descripcion: 'Carne, cheddar y panceta.',
-      imagen: 'https://images.pexels.com/photos/1639561/pexels-photo-1639561.jpeg',
-      categoria: 'hamburguesa',
-      basePrecio: 1700,
-    },
-    {
-      nombre: 'Veggie',
-      descripcion: 'Medallón vegetal y vegetales.',
-      imagen: 'https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg',
-      categoria: 'hamburguesa',
-      basePrecio: 1600,
-    },
-  ];
+  useEffect(() => {
+    const fetchHamburguesas = async () => {
+      try {
+        const res = await fetch('/api/pedidos'); // Ajusta si tu ruta es distinta
+        const data = await res.json();
+        if (data.hamburguesas) {
+          setHamburguesas(data.hamburguesas);
+        }
+      } catch (error) {
+        console.error('Error al cargar hamburguesas:', error);
+      }
+    };
+
+    fetchHamburguesas();
+  }, []);
 
   const calcularPrecio = (base, tam) => {
     if (tam === 'doble') return Math.round(base * 1.2);
@@ -45,6 +39,9 @@ const Hamburguesas = () => {
   const handleSeleccion = (item) => {
     setSeleccionada(item);
     setTamano('');
+    setTimeout(() => {
+      tamanoRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   };
 
   const handleSeleccionTamano = (t) => {
@@ -59,7 +56,7 @@ const Hamburguesas = () => {
           precio: precioFinal,
           categoria: 'hamburguesa',
           imagen: seleccionada.imagen,
-        }
+        },
       })
     );
   };
@@ -69,29 +66,47 @@ const Hamburguesas = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 p-4">
+    <div className="max-w-4xl mx-auto mt-10 p-4">
       <h2 className="text-3xl mb-6 font-semibold text-center">Elegí tu hamburguesa</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+      <div className="flex flex-col gap-6">
         {hamburguesas.map((item) => (
           <div
-            key={item.nombre}
-            className={`border rounded-lg p-4 cursor-pointer transition-all duration-200 shadow ${
-              seleccionada?.nombre === item.nombre ? 'border-green-500 shadow-md scale-105' : 'border-gray-300'
+            key={item._id}
+            className={`flex items-center gap-4 border rounded-lg p-4 cursor-pointer transition-all duration-200 shadow ${
+              seleccionada?.nombre === item.nombre
+                ? 'border-green-500 shadow-md scale-[1.02]'
+                : 'border-gray-300'
             }`}
             onClick={() => handleSeleccion(item)}
           >
-            <img src={item.imagen} alt={item.nombre} className="w-full h-40 object-cover rounded mb-3" />
-            <h3 className="text-xl font-semibold">{item.nombre}</h3>
-            <p className="text-gray-600 mb-2">{item.descripcion}</p>
-            <p className="text-gray-800 font-medium">Desde ${item.basePrecio}</p>
+            <img
+              src={item.imagen}
+              alt={item.nombre}
+              className="w-32 h-32 object-cover rounded-md"
+            />
+            <div className="flex-1 flex flex-col">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-xl font-semibold">{item.nombre}</h3>
+                  <p className="text-gray-600">{item.descripcion}</p>
+                </div>
+                <p className="text-gray-800 font-semibold whitespace-nowrap ml-4">
+                  Desde ${item.basePrecio}
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
       {seleccionada && (
-        <div className="mt-8 text-center">
-          <h3 className="text-lg font-semibold mb-3">Elegí el tamaño</h3>
-          <div className="flex gap-4 justify-center">
+        <div ref={tamanoRef} className="mt-10 text-center">
+          <div className="mb-4 animate-bounce text-green-700 font-semibold text-lg flex items-center justify-center gap-2">
+            <span>👇 Elegí el tamaño de tu hamburguesa</span>
+          </div>
+          <h3 className="text-lg font-semibold mb-3">Tamaños disponibles</h3>
+          <div className="flex gap-4 justify-center flex-wrap">
             {['simple', 'doble', 'triple'].map((t) => (
               <button
                 key={t}

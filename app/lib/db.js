@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI =
-  "mongodb+srv://pabgonzalez3798:4RqmxtpXnbMgFQ4J@backendnext.c3uqulz.mongodb.net/Pedidos";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) throw new Error("Falta la URI de MongoDB");
 

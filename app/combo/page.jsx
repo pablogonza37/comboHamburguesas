@@ -71,12 +71,12 @@ const Combo = () => {
               alt={combo.nombre}
               className="w-32 h-32 object-cover rounded-md"
             />
-            <div className="flex-1 flex justify-between items-start">
+            <div className="flex-1 flex flex-col md:flex-row md:justify-between md:items-start">
               <div>
                 <h3 className="text-xl font-semibold">{combo.nombre}</h3>
                 <p className="text-gray-600">{combo.descripcion}</p>
               </div>
-              <p className="text-gray-800 font-semibold whitespace-nowrap ml-4">
+              <p className="text-yellow-500 font-bold text-lg whitespace-nowrap mt-2 md:mt-0 md:ml-4">
                 ${combo.precio}
               </p>
             </div>

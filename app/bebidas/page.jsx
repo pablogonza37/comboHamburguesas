@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice';
-import Loading from '../../components/ui/loading'; 
+import Loading from '../../components/ui/loading';
 
 const Bebidas = () => {
   const router = useRouter();
@@ -55,7 +55,6 @@ const Bebidas = () => {
     router.push('/confirmarPedido');
   };
 
-
   if (loading) return <Loading />;
 
   return (
@@ -77,12 +76,12 @@ const Bebidas = () => {
               alt={bebida.nombre}
               className="w-32 h-32 object-cover rounded-md"
             />
-            <div className="flex-1 flex justify-between items-start">
+            <div className="flex-1 flex flex-col md:flex-row md:justify-between md:items-start">
               <div>
                 <h3 className="text-xl font-semibold">{bebida.nombre}</h3>
                 <p className="text-gray-600">{bebida.descripcion}</p>
               </div>
-              <p className="text-gray-800 font-semibold whitespace-nowrap ml-4">
+              <p className="text-yellow-500 font-bold text-lg whitespace-nowrap mt-2 md:mt-0 md:ml-4">
                 ${bebida.precio}
               </p>
             </div>

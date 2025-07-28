@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🍔 BurgerApp - Tu app para armar combos y hacer pedidos
 
-## Getting Started
 
-First, run the development server:
+## 🚀 ¿Qué es BurgerApp?
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+BurgerApp es una aplicación web sencilla e intuitiva que permite a los usuarios armar su combo ideal de hamburguesa, combo, acompañamientos y bebida, visualizar el resumen de su pedido y confirmarlo. Ideal para quienes buscan rapidez, buen diseño y funcionalidad al pedir su comida favorita.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## ⚙️ ¿Cómo funciona?
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Elegí tu hamburguesa:** Explora las opciones disponibles y selecciona la hamburguesa que más te guste. También podés elegir el tamaño (simple, doble, triple) que afecta el precio.
 
-## Learn More
+2. **Elegí tu combo:** Después, seleccioná un combo que complemente tu hamburguesa.
 
-To learn more about Next.js, take a look at the following resources:
+3. **Elegí tu bebida:** Finalmente, seleccioná una bebida para completar tu pedido.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Confirmá tu pedido:** Visualizá un resumen con todos los productos seleccionados y el precio total, y confirmá tu pedido.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. **Historial:** Podés ver los pedidos que ya confirmaste.
 
-## Deploy on Vercel
+La aplicación también incluye validaciones para guiarte y evitar errores al hacer el pedido.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠 Tecnologías usadas
+
+- **Next.js 13** — Framework React para aplicaciones modernas y optimizadas  
+- **React 18** — Biblioteca para construir interfaces de usuario  
+- **Redux Toolkit** — Manejo de estado global simple y eficiente  
+- **Tailwind CSS** — Framework CSS para estilos rápidos y responsivos  
+- **SweetAlert2** — Para alertas y mensajes modales elegantes  
+- **MongoDB** (opcional, backend) — Base de datos para almacenar productos y pedidos  
+- **Vercel** — Para hosting y despliegue continuo  
+
+---
+
+## 📺 Demo en vivo
+
+[Ver demo en Vercel](https://combo-hamburguesas.vercel.app/)
+
+
+---
+
+## 📦 Contenido de la aplicación
+
+- **Página Principal:** Bienvenida con imagen de fondo y botón para comenzar el pedido  
+- **Hamburguesas:** Selección con tamaños y precios ajustables  
+- **Combos:** Opciones para complementar la hamburguesa  
+- **Bebidas:** Variedad de bebidas para elegir  
+- **Confirmar Pedido:** Resumen detallado, confirmación y posibilidad de eliminar pedido  
+- **Historial de Pedidos:** Listado de pedidos confirmados previamente  
+- **Footer y Navbar:** Navegación clara y footer con redes sociales y secciones  
+
+---
+
+## 👤 Sobre el creador
+
+**Pablo Gonzalez** — Desarrollador web full stack apasionado por crear aplicaciones funcionales, limpias y con excelente experiencia de usuario.
+
+---
+
+Cualquier duda o sugerencia, no dudes en contactarme.  

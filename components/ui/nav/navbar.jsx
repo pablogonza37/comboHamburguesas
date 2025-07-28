@@ -10,9 +10,8 @@ const NavBar = () => {
 
   const links = [
     { nombre: 'Inicio', href: '/principal' },
-    { nombre: 'Hamburguesas', href: '/hamburguesas' },
-    { nombre: 'Combos', href: '/combos' },
-    { nombre: 'Bebidas', href: '/bebidas' },
+    { nombre: 'Nosotros', href: '/nosotros' },
+    { nombre: 'Contacto', href: '/contacto' },
   ];
 
   const toggleMenu = () => setMenuAbierto(!menuAbierto);

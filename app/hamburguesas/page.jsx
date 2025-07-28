@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice';
+import Loading from '../../components/ui/loading';
 
 const Hamburguesas = () => {
   const dispatch = useDispatch();
@@ -12,18 +13,21 @@ const Hamburguesas = () => {
   const [hamburguesas, setHamburguesas] = useState([]);
   const [seleccionada, setSeleccionada] = useState(null);
   const [tamano, setTamano] = useState('');
+  const [loading, setLoading] = useState(true);
   const tamanoRef = useRef(null);
 
   useEffect(() => {
     const fetchHamburguesas = async () => {
       try {
-        const res = await fetch('/api/pedidos'); // Ajusta si tu ruta es distinta
+        const res = await fetch('/api/pedidos');
         const data = await res.json();
         if (data.hamburguesas) {
           setHamburguesas(data.hamburguesas);
         }
       } catch (error) {
         console.error('Error al cargar hamburguesas:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -64,6 +68,8 @@ const Hamburguesas = () => {
   const handleSiguiente = () => {
     router.push('/combo');
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-4">

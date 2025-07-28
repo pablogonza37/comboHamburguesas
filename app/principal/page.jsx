@@ -1,10 +1,24 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 
-
 const Main = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    // Renderizamos solo un div básico para que el SSR y el cliente coincidan
+    return (
+      <div className="min-h-screen bg-black">
+        {/* O un placeholder vacío o loader */}
+      </div>
+    );
+  }
+
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat"
@@ -18,7 +32,7 @@ const Main = () => {
           ¡Bienvenido!
         </h1>
         <Link href="/hamburguesas" className="bg-yellow-500 border-white hover:bg-yellow-600 text-white text-3xl font-extrabold py-6 px-14 rounded-full shadow-xl transition duration-300">
-          Crear combo
+          Armá tu combo
         </Link>
       </div>
     </div>
@@ -26,7 +40,3 @@ const Main = () => {
 };
 
 export default Main;
-
-
-
-

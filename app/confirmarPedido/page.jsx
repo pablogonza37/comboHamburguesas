@@ -64,7 +64,7 @@ const ConfirmarPedido = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 bg-white p-6 rounded-lg shadow">
+    <div className="max-w-xl mx-auto mt-10 mb-10 bg-white p-6 rounded-lg shadow">
       <h2 className="text-2xl font-bold mb-4 text-center">Resumen del Pedido</h2>
       <ul className="mb-4">
         {pedido.map((item, index) => (

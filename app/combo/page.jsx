@@ -4,12 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { reemplazarProductoPorCategoria } from '../../app/redux/pedidosSlice';
+import Loading from '../../components/ui/loading';
 
 const Combo = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [seleccionado, setSeleccionado] = useState(null);
   const [combos, setCombos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const productos = useSelector((state) => state.pedido.pedido);
 
@@ -22,14 +24,17 @@ const Combo = () => {
 
   useEffect(() => {
     const obtenerCombos = async () => {
+      setLoading(true);
       try {
-        const res = await fetch('/api/pedidos'); // Cambiá si el endpoint es otro
+        const res = await fetch('/api/pedidos');
         const data = await res.json();
         if (data.combos) {
           setCombos(data.combos);
         }
       } catch (error) {
         console.error('Error al traer combos:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -44,6 +49,8 @@ const Combo = () => {
   const handleSiguiente = () => {
     router.push('/bebidas');
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className="p-6 max-w-4xl mx-auto">

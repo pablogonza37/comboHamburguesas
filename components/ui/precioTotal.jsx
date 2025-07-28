@@ -11,6 +11,8 @@ const PrecioTotal = () => {
   if (pathname === '/principal') return null;
   if (pathname === '/pedidosConfirmados') return null;
   if (pathname === '/pago') return null;
+  if (pathname === '/contacto') return null;
+  if (pathname === '/nosotros') return null;
 
   return (
     <div className="fixed top-20 right-4 bg-black text-white px-6 py-3 rounded-full shadow-lg text-lg font-semibold z-50">

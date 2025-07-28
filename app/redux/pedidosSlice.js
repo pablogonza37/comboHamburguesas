@@ -29,6 +29,5 @@ export const pedidoSlice = createSlice({
   },
 });
 
-// 👇 Exportá también la nueva acción
 export const { reemplazarProductoPorCategoria, agregarProducto, reiniciarPedido } = pedidoSlice.actions;
 export default pedidoSlice.reducer;

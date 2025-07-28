@@ -1,5 +1,3 @@
-// app/redux/store.js
-
 import { configureStore } from '@reduxjs/toolkit';
 import pedidoReducer from './pedidosSlice';
 import historialReducer from './historialSlice';

@@ -11,7 +11,7 @@ const Main = () => {
   }, []);
 
   if (!isClient) {
-    // Renderizamos solo un div básico para que el SSR y el cliente coincidan
+    
     return (
       <div className="min-h-screen bg-black">
         {/* O un placeholder vacío o loader */}

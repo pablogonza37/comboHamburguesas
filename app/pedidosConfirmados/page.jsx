@@ -140,7 +140,7 @@ const PedidosYPago = () => {
         ))}
       </div>
 
-      {/* BOTONES SIEMPRE VISIBLES */}
+     
       <div className="flex flex-wrap gap-4 mb-10">
         <button
           onClick={() => setMostrarPago(true)}
